@@ -64,7 +64,7 @@ where
     } = DeserializeWithTypeTag::deserialize(deserializer)?;
 
     let (type_info, deserialize) = TypeRegistry::with_current(|registry| {
-        let registration = match registry.get_with_short_name(&type_name) {
+        let registration = match registry.get_with_type_path(&type_name) {
             Some(registration) => registration,
             None => {
                 return Err(TypeError::UnregisteredShortName(
@@ -77,7 +77,7 @@ where
             Some(deserialize) => deserialize,
             None => {
                 return Err(TypeError::UnregisteredTrait(
-                    registration.type_name().to_string().into(),
+                    registration.type_info().type_path().to_string().into(),
                     "Deserialize",
                 ));
             }

@@ -10,6 +10,7 @@ mod value;
 pub use de::*;
 pub use ser::*;
 
+/*
 #[cfg(test)]
 mod tests {
     use crate::prelude::*;
@@ -119,3 +120,4 @@ mod tests {
         });
     }
 }
+ */

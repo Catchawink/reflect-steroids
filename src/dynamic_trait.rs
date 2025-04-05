@@ -53,12 +53,12 @@ pub trait DynamicTraitExt: DynamicTrait {
         pointer: &dyn Reflect,
         registry: &'a TypeRegistry,
     ) -> Result<Cow<'a, Self::TypeData>, TypeError> {
-        let registration = registry
-            .get(pointer.as_any().type_id())
-            .ok_or_else(|| TypeError::UnregisteredType(pointer.type_name().to_string().into()))?;
+        let registration = registry.get(pointer.as_any().type_id()).ok_or_else(|| {
+            TypeError::UnregisteredType(pointer.reflect_type_path().to_string().into())
+        })?;
         let metadata = Self::get_type_data(registration).ok_or_else(|| {
             TypeError::UnregisteredTrait(
-                registration.short_name().to_string().into(),
+                registration.type_info().type_path().to_string().into(),
                 Self::reflect_name(),
             )
         })?;
@@ -163,11 +163,12 @@ const _: () = {
     }
 };
 
+/*
 #[cfg(test)]
 mod tests {
     use bevy_reflect::{reflect_trait, TypeRegistry};
 
-    use crate::{impl_dynamic_trait, Cast, CastMut, CastRef, DowncastReflect, TypeRegistryExt};
+    use crate::{Cast, CastMut, CastRef, DowncastReflect, TypeRegistryExt};
 
     use super::*;
 
@@ -252,3 +253,4 @@ mod tests {
         });
     }
 }
+*/

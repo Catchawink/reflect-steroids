@@ -25,8 +25,8 @@ pub use serde;
 pub mod prelude {
     #[doc(no_inline)]
     pub use super::{
-        impl_dynamic_trait, reflect::prelude::*, Cast as _, CastBox as _, CastMut as _,
-        CastRef as _, DowncastReflect, DynamicTraitExt as _, TypeRegistryExt as _,
+        reflect::prelude::*, Cast as _, CastBox as _, CastMut as _, CastRef as _, DowncastReflect,
+        DynamicTraitExt as _, TypeRegistryExt as _,
     };
 
     #[doc(no_inline)]
@@ -34,6 +34,7 @@ pub mod prelude {
     pub use super::enable_global_type_registration;
 }
 
+/*
 /// Implement [`DynamicTrait`] for a trait object.
 ///
 /// This enables dynamic trait casting for `dyn MyTrait`, via
@@ -148,12 +149,12 @@ macro_rules! impl_dynamic_trait {
             }
         }
 
-        impl $crate::reflect::Reflect for Box<dyn $trait_name> {
-            fn type_name(&self) -> &str {
-                (**self).as_reflect().type_name()
+        impl $crate::reflect::PartialReflect for Box<dyn $trait_name> {
+            fn type_path(&self) -> &str {
+                (**self).as_reflect().type_path()
             }
 
-            fn get_type_info(&self) -> &'static bevy_reflect::TypeInfo {
+            fn get_type_data(&self) -> &'static bevy_reflect::TypeInfo {
                 (**self).as_reflect().get_type_info()
             }
 
@@ -248,6 +249,7 @@ macro_rules! impl_dynamic_trait {
         }
     };
 }
+*/
 
 #[cfg(feature = "inventory")]
 #[doc(hidden)]

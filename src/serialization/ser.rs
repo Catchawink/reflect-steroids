@@ -56,9 +56,9 @@ where
 
     let type_name = TypeRegistry::with_current(|registry| {
         let registration = registry.get(this.as_reflect().type_id()).ok_or_else(|| {
-            TypeError::UnregisteredType(this.as_reflect().type_name().to_string().into())
+            TypeError::UnregisteredType(this.as_reflect().reflect_type_path().to_string().into())
         })?;
-        let type_name = registration.short_name().to_string();
+        let type_name = registration.type_info().type_path().to_string();
         Ok(type_name)
     })
     .map_err(|e: TypeError| S::Error::custom(e))?;
@@ -129,7 +129,11 @@ impl<Ptr: Deref<Target = dyn Reflect>> Serialize for SerializePointerWithTypeTag
                     Some(type_name) => type_name,
                     None => {
                         return Err(TypeError::UnregisteredType(
-                            self.pointer.as_reflect().type_name().to_string().into(),
+                            self.pointer
+                                .as_reflect()
+                                .reflect_type_path()
+                                .to_string()
+                                .into(),
                         ))
                     }
                 };
@@ -137,7 +141,11 @@ impl<Ptr: Deref<Target = dyn Reflect>> Serialize for SerializePointerWithTypeTag
                 .data::<ReflectSerialize>()
                 .ok_or_else(|| {
                     TypeError::UnregisteredTrait(
-                        self.pointer.as_reflect().type_name().to_string().into(),
+                        self.pointer
+                            .as_reflect()
+                            .reflect_type_path()
+                            .to_string()
+                            .into(),
                         "Serialize",
                     )
                 })?
@@ -146,7 +154,7 @@ impl<Ptr: Deref<Target = dyn Reflect>> Serialize for SerializePointerWithTypeTag
         .map_err(S::Error::custom)?;
 
         let serializable = serialize.get_serializable(&*self.pointer);
-        serializable.borrow().serialize(serializer)
+        serializable.serialize(serializer)
     }
 }
 

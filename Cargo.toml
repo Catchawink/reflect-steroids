@@ -14,7 +14,7 @@ readme = "README.md"
 # members = ["crates/test-macro-namespacing"]
 
 [dependencies]
-bevy_reflect = "0.8.0"
+bevy_reflect = "0.15.3"
 inventory = { version = "0.3.1", optional = true }
 scoped-tls = "1.0.0"
 serde = { version = "1.0.143", features = ["derive"] }
